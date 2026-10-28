@@ -1,5 +1,7 @@
 import type {
   Application,
+  DetectionIssue,
+  SiteMapping,
   ElementLocator,
   FormSummary,
   JobAnalysis,
@@ -83,7 +85,7 @@ export interface ContentState {
 
 /** Requests sent to every frame (or one frame) of a tab. */
 export type FrameRequest =
-  | { kind: 'frame:scan' }
+  | { kind: 'frame:scan'; mapping: SiteMapping | null }
   | { kind: 'frame:fill'; plan: FillPlan }
   | { kind: 'frame:highlightClear' }
   | { kind: 'frame:fillField'; fieldId: string; value: string }
@@ -99,8 +101,19 @@ export type PickPurpose =
 
 /** Result of `frame:scan` in one frame. */
 export interface FrameScanResult {
+  frameId: number;
   frameUrl: string;
   form: FormSummary;
+  /** Job read inside this frame (embedded job boards often live in iframes). */
+  detection: FrameJobDetection | null;
+}
+
+export interface FrameJobDetection {
+  isJobPage: boolean;
+  confidence: number;
+  job: JobPosting | null;
+  issues: DetectionIssue[];
+  hasValidDescription: boolean;
 }
 
 /** Events a sub-frame forwards to the top frame (where the overlay lives). */

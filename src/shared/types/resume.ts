@@ -116,6 +116,9 @@ export interface ScreeningAnswer {
   /** Field on the page this answers, when it came from detection. */
   fieldId?: string;
   frameId?: number;
+  /** Field kind and options of the original question, kept for regeneration. */
+  kind?: 'text' | 'textarea' | 'select' | 'radio' | 'checkbox';
+  options?: string[];
   source: 'generated' | 'manual' | 'saved';
   edited: boolean;
 }

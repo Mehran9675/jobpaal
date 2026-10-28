@@ -1,0 +1,308 @@
+/* Overlay-only styles. Rendered inside a shadow root together with base.css. */
+:host {
+  all: initial;
+}
+
+.jp-ov-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483646;
+  background: transparent;
+}
+.jp-ov-layer > * {
+  pointer-events: auto;
+}
+
+.jp-ov-fab {
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: var(--jp-surface);
+  box-shadow: var(--jp-shadow);
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.jp-ov-fab:active {
+  cursor: grabbing;
+}
+.jp-ov-fab img {
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+}
+.jp-ov-fab__light {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--jp-surface);
+}
+.jp-ov-fab__light--green {
+  background: #16a34a;
+}
+.jp-ov-fab__light--red {
+  background: #dc2626;
+}
+.jp-ov-fab__busy {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 3px solid var(--jp-primary);
+  border-right-color: transparent;
+  animation: jp-spin 0.9s linear infinite;
+}
+
+.jp-ov-panel {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--jp-border);
+  border-radius: 12px;
+  background: var(--jp-bg);
+  box-shadow: var(--jp-shadow);
+  overflow: hidden;
+  transform-origin: top left;
+}
+.jp-ov-panel__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--jp-bg-subtle);
+  border-bottom: 1px solid var(--jp-border);
+  font-size: 12.5px;
+}
+.jp-ov-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--jp-border);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.jp-ov-panel__header:active {
+  cursor: grabbing;
+}
+.jp-ov-panel__header img {
+  width: 22px;
+  height: 22px;
+}
+.jp-ov-panel__title {
+  font-weight: 700;
+  font-size: 14px;
+  flex: 1;
+}
+.jp-ov-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jp-ov-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.jp-ov-scale button {
+  min-width: 24px;
+  height: 22px;
+  border: 1px solid var(--jp-border-strong);
+  background: var(--jp-surface);
+  color: var(--jp-text);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.jp-ov-scale span {
+  min-width: 40px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.jp-ov-section {
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius);
+  background: var(--jp-surface);
+}
+.jp-ov-section > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.jp-ov-section > summary::-webkit-details-marker {
+  display: none;
+}
+.jp-ov-section > summary::after {
+  content: '▾';
+  color: var(--jp-text-faint);
+  transition: transform 0.15s;
+}
+.jp-ov-section:not([open]) > summary::after {
+  transform: rotate(-90deg);
+}
+.jp-ov-section__body {
+  padding: 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jp-ov-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--jp-radius);
+  font-size: 13px;
+}
+.jp-ov-status--green {
+  background: var(--jp-success-soft);
+  color: var(--jp-success);
+}
+.jp-ov-status--red {
+  background: var(--jp-danger-soft);
+  color: var(--jp-danger);
+}
+.jp-ov-status ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.jp-ov-job {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 3px 8px;
+  font-size: 13px;
+}
+.jp-ov-job dt {
+  color: var(--jp-text-muted);
+}
+.jp-ov-job dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.jp-ov-source {
+  color: var(--jp-text-faint);
+  font-size: 11.5px;
+}
+
+.jp-ov-preview {
+  max-height: 120px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-size: 12.5px;
+  padding: 8px;
+  border-radius: var(--jp-radius-sm);
+  background: var(--jp-bg-subtle);
+  color: var(--jp-text-muted);
+}
+
+.jp-ov-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.jp-ov-actions .jp-ov-main {
+  grid-column: 1 / -1;
+  min-height: 38px;
+  font-size: 14.5px;
+}
+
+.jp-ov-item {
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius-sm);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.jp-ov-item__q {
+  font-weight: 600;
+  font-size: 13px;
+}
+.jp-ov-item__a {
+  font-size: 13px;
+  white-space: pre-wrap;
+  color: var(--jp-text-muted);
+}
+
+.jp-ov-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius-sm);
+}
+
+.jp-ov-busy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--jp-radius);
+  background: var(--jp-primary-soft);
+  color: var(--jp-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.jp-ov-picking {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--jp-text);
+  color: var(--jp-bg);
+  box-shadow: var(--jp-shadow);
+  font-size: 13px;
+}
+
+.jp-ov-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-top: 1px solid var(--jp-border);
+  background: var(--jp-bg-subtle);
+  font-size: 12px;
+  color: var(--jp-text-muted);
+}
+.jp-ov-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--jp-primary);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
