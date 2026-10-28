@@ -57,7 +57,7 @@ for (const target of targets) {
   await build({ configFile: resolve(root, 'vite.config.ts'), logLevel: 'warn', mode: 'production' });
   await buildScript(target, 'src/content/index.ts', 'content.js');
   await buildScript(target, 'src/background/index.ts', 'background.js');
-  const manifest = createManifest(target, pkg.version);
+  const manifest = createManifest(target, process.env.JOBPAAL_VERSION || pkg.version);
   await writeFile(resolve(root, 'dist', target, 'manifest.json'), JSON.stringify(manifest, null, 2));
   console.log(`✔ dist/${target}`);
 }

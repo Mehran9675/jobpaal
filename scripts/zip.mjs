@@ -75,7 +75,7 @@ for (const target of targets) {
   end.writeUInt16LE(files.length, 10);
   end.writeUInt32LE(centralSize, 12);
   end.writeUInt32LE(offset, 16);
-  const out = resolve(root, `jobpaal-${target}-${pkg.version}.zip`);
+  const out = resolve(root, `jobpaal-${target}-${process.env.JOBPAAL_VERSION || pkg.version}.zip`);
   await writeFile(out, Buffer.concat([...locals, ...centrals, end]));
   console.log(`✔ ${relative(root, out)} (${files.length} files)`);
 }

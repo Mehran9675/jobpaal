@@ -9,6 +9,13 @@ JobPaal is a browser extension for job seekers. It turns the job posting you are
 
 The full product description is in [docs/PRODUCT.md](docs/PRODUCT.md).
 
+## Install from a release
+
+Publishing a GitHub release runs `.github/workflows/release.yml`, which type-checks, tests, builds and attaches these files to the release (the release tag, e.g. `v1.2.0`, becomes the extension version):
+
+- `jobpaal-chrome-<version>.zip` — Chrome, Edge, Brave, Opera. Unzip it, open `chrome://extensions` (or `edge://extensions`, `brave://extensions`, `opera://extensions`), enable Developer mode, choose *Load unpacked* and select the unzipped folder. The same zip is what you upload to the Chrome Web Store, Edge Add-ons or Opera add-ons.
+- `jobpaal-firefox-<version>.xpi` / `.zip` — Firefox. For testing, open `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on* and pick the file. Permanent installs in release Firefox require the add-on to be signed by Mozilla (upload the zip to addons.mozilla.org, listed or unlisted); Firefox Developer Edition / Nightly can install the unsigned `.xpi` with `xpinstall.signatures.required` set to `false`.
+
 ## Build
 
 Requires Node.js 22+.
