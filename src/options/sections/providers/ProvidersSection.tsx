@@ -19,9 +19,10 @@ export function ProvidersSection({ focus }: { focus?: 'usage' }) {
   const [adding, setAdding] = useState(false);
   const usageRef = useRef<HTMLDivElement>(null);
 
+  const loaded = ai !== undefined;
   useEffect(() => {
-    if (focus === 'usage' && ai) usageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [focus, ai === undefined]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (focus === 'usage' && loaded) usageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [focus, loaded]);
 
   if (!ai) {
     return (
