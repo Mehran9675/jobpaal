@@ -1,0 +1,34 @@
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+.jp-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.jp-viewer__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--jp-border);
+  background: var(--jp-bg-subtle);
+}
+.jp-viewer__frame {
+  flex: 1;
+  border: 0;
+  width: 100%;
+  background: #fff;
+}
+.jp-viewer__text {
+  flex: 1;
+  margin: 0;
+  padding: 24px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: var(--jp-mono);
+  font-size: 13px;
+}

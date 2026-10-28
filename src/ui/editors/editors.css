@@ -1,0 +1,33 @@
+/* Styles for src/ui/editors (ResumeEditor, CoverLetterEditor, AnswersEditor). */
+.jp-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.jp-editor__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.jp-editor__heading {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--jp-text-muted);
+}
+.jp-editor__letter {
+  min-height: 420px;
+  line-height: 1.6;
+}
+.jp-editor__answer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius-sm);
+}
+.jp-editor__question {
+  font-weight: 600;
+}
