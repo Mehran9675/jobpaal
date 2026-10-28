@@ -13,4 +13,6 @@ export const STORAGE_KEYS = {
   savedAnswers: 'savedAnswers',
   forcedPages: 'forcedPages',
   installedAt: 'installedAt',
+  /** LinkedIn scan waiting to be reviewed and merged in the management page. */
+  pendingImport: 'pendingImport',
 } as const;
