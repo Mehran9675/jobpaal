@@ -4,7 +4,7 @@ JobPaal is a browser extension for job seekers. It turns the job posting you are
 
 - **Never submits.** You review every document and form and submit yourself.
 - **Never invents facts.** It rewords, reorders, trims and emphasises what is in your profile. No new employers, titles, seniority, dates, skills, tools or metrics. Truth guards check every AI output before it reaches a document.
-- **Bring your own AI.** More than 40 providers preconfigured (OpenAI, Anthropic, Gemini, Vertex, xAI, Mistral, Cohere, DeepSeek, OpenRouter, Azure OpenAI, Groq, Ollama, LM Studio and more).
+- **Bring your own AI.** More than 40 providers preconfigured (OpenAI, Anthropic, Gemini, Vertex, xAI, Mistral, Cohere, DeepSeek, OpenRouter, Azure OpenAI, Groq, Together, Ollama, LM Studio and more). Model catalogues change often: "Load available models" shows what your key can use, and a failed connection test lists current models when the configured one was retired.
 - **Local only.** No account, server, telemetry or ads. Everything is stored in `chrome.storage.local`; content leaves the browser only when it is sent to the AI provider you configured.
 
 The full product description is in [docs/PRODUCT.md](docs/PRODUCT.md).

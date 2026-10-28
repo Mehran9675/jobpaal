@@ -30,7 +30,8 @@ export function ProviderForm({ provider, isActive, onDeleted }: ProviderFormProp
   const keyId = useId();
   const preset = getPreset(provider.presetId);
   const dirty = comparable(draft) !== comparable(provider);
-  const suggested = [...new Set([...(models.length ? models : []), ...(preset?.suggestedModels ?? [])])];
+  // Once the live list is loaded, only offer models the provider actually serves.
+  const suggested = models.length ? models : (preset?.suggestedModels ?? []);
 
   const set = <K extends keyof ProviderConfig>(key: K, value: ProviderConfig[K]) => setDraft((d) => ({ ...d, [key]: value }));
 
@@ -148,7 +149,11 @@ export function ProviderForm({ provider, isActive, onDeleted }: ProviderFormProp
           onChange={(v) => set('model', v)}
           list={listId}
           spellCheck={false}
-          hint={preset?.defaultModel ? `Default: ${preset.defaultModel}` : undefined}
+          hint={
+            preset?.defaultModel
+              ? `Default: ${preset.defaultModel}. If the provider has retired it, load the available models.`
+              : 'No default: load the available models and pick one.'
+          }
         />
         <datalist id={listId}>
           {suggested.map((m) => (

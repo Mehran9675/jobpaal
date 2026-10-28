@@ -97,8 +97,36 @@ export async function listModels(config: ProviderConfig): Promise<string[]> {
   return unique.length ? unique : [...suggested];
 }
 
+const MODEL_ERROR = /model/i;
+const MODEL_MISSING = /not.?found|does not exist|not exist|not available|unavailable|invalid|unknown|unsupported|no such|deprecated|retired|decommissioned|not supported|not allowed/i;
+
+/** True when the provider rejected the configured model (as opposed to the key or the URL). */
+export function isModelError(error: unknown): boolean {
+  if (!(error instanceof AiHttpError)) return false;
+  const text = `${error.providerMessage} ${error.message}`;
+  if (error.status === 404) return MODEL_ERROR.test(error.providerMessage);
+  return [400, 422].includes(error.status) && MODEL_ERROR.test(text) && MODEL_MISSING.test(text);
+}
+
+/** Explains a rejected or missing model and lists what the provider offers now. */
+async function modelHint(config: ProviderConfig, base: string): Promise<string> {
+  try {
+    const models = await listModels(config);
+    if (!models.length) return base;
+    const shown = models.slice(0, 12).join(', ');
+    return `${base} Models your key can use: ${shown}${models.length > 12 ? `, … (${models.length} in total)` : ''}. Click "Load available models" to pick one.`;
+  } catch {
+    return `${base} Click "Load available models" to see the models your key can use.`;
+  }
+}
+
 /** Sends a tiny request to check key, URL and model. Never throws. */
 export async function testConnection(config: ProviderConfig): Promise<{ ok: boolean; message: string }> {
+  if (!config.model.trim() && config.protocol !== 'azure') {
+    const problem = configProblem({ ...config, model: 'placeholder' });
+    if (problem) return { ok: false, message: problem };
+    return { ok: false, message: await modelHint(config, 'Choose a model for this provider.') };
+  }
   try {
     const result = await dispatch(config, {
       messages: [{ role: 'user', content: 'Reply with the single word: OK' }],
@@ -113,6 +141,9 @@ export async function testConnection(config: ProviderConfig): Promise<{ ok: bool
         : `Connected to ${result.model || config.model}, but the model returned no text for the test prompt.`,
     };
   } catch (error) {
+    if (isModelError(error)) {
+      return { ok: false, message: await modelHint(config, `The model "${config.model}" is not available: ${errorMessage(error)}`) };
+    }
     return { ok: false, message: errorMessage(error) };
   }
 }

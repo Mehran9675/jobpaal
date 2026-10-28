@@ -104,13 +104,41 @@ export function completeOpenAi(config: ProviderConfig, request: CompletionReques
   return sendOpenAiStyle(url, authHeaders(config), config, request, true);
 }
 
+interface ModelEntry {
+  id?: string;
+  name?: string;
+  type?: string;
+  object?: string;
+}
+
+/** Model types that cannot answer chat completions (Together and others tag their catalogue). */
+const NON_CHAT_TYPES = /^(image|embedding|embeddings|rerank|moderation|audio|transcribe|tts|stt|video|speech)$/i;
+
+/**
+ * Reads a model list. Most providers return `{ data: [...] }`, some `{ models: [...] }`,
+ * and Together returns a bare array.
+ */
+export function parseModelList(data: unknown): string[] {
+  const list: unknown[] = Array.isArray(data)
+    ? data
+    : Array.isArray((data as { data?: unknown })?.data)
+      ? (data as { data: unknown[] }).data
+      : Array.isArray((data as { models?: unknown })?.models)
+        ? (data as { models: unknown[] }).models
+        : [];
+  return list
+    .map((entry) => (typeof entry === 'string' ? { id: entry } : ((entry ?? {}) as ModelEntry)))
+    .filter((m) => !(m.type && NON_CHAT_TYPES.test(m.type)))
+    .map((m) => m.id ?? m.name ?? '')
+    .filter(Boolean);
+}
+
 export async function listModelsOpenAi(config: ProviderConfig): Promise<string[]> {
   const url = joinUrl(resolveBaseUrl(config), 'models');
-  const data = await requestJson<{ data?: { id?: string }[]; models?: { id?: string; name?: string }[] }>(url, {
+  const data = await requestJson<unknown>(url, {
     headers: authHeaders(config),
     providerName: providerLabel(config),
     timeoutMs: 30_000,
   });
-  const list = data.data ?? data.models ?? [];
-  return list.map((m) => m.id ?? (m as { name?: string }).name ?? '').filter(Boolean);
+  return parseModelList(data);
 }

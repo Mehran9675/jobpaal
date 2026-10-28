@@ -201,7 +201,55 @@ describe('client', () => {
 
   it('falls back to suggested models when there is no list endpoint', async () => {
     mockFetch({ status: 404, body: 'Not found' });
-    const models = await listModels(makeConfig({ presetId: 'perplexity', baseUrl: 'https://api.perplexity.ai' }));
-    expect(models).toContain('sonar');
+    const models = await listModels(makeConfig({ presetId: 'groq', baseUrl: 'https://api.groq.com/openai/v1' }));
+    expect(models).toContain('openai/gpt-oss-120b');
+  });
+});
+
+describe('model lists and retired models', () => {
+  it('reads Together-style bare-array model lists and skips non-chat models', async () => {
+    mockFetch({
+      body: [
+        { id: 'zai-org/GLM-5.3', type: 'chat' },
+        { id: 'black-forest-labs/FLUX.2', type: 'image' },
+        { id: 'BAAI/bge-large', type: 'embedding' },
+        { id: 'moonshotai/Kimi-K3', type: 'chat' },
+      ],
+    });
+    const models = await listModels(makeConfig({ presetId: 'together', baseUrl: 'https://api.together.ai/v1' }));
+    expect(models).toEqual(['moonshotai/Kimi-K3', 'zai-org/GLM-5.3']);
+  });
+
+  it('still reads { data: [...] } lists', async () => {
+    mockFetch({ body: { object: 'list', data: [{ id: 'b' }, { id: 'a' }] } });
+    expect(await listModels(makeConfig())).toEqual(['a', 'b']);
+  });
+
+  it('lists the available models when the configured model was retired', async () => {
+    const calls = mockFetch(
+      { status: 404, body: { error: { message: 'Unable to access model meta-llama/Llama-3.3-70B-Instruct-Turbo. Please visit https://api.together.ai/models to view the list of supported models.' } } },
+      { body: [{ id: 'zai-org/GLM-5.3', type: 'chat' }] },
+    );
+    const result = await testConnection(
+      makeConfig({ presetId: 'together', baseUrl: 'https://api.together.ai/v1', model: 'meta-llama/Llama-3.3-70B-Instruct-Turbo' }),
+    );
+    expect(result.ok).toBe(false);
+    expect(result.message).toMatch(/not available/);
+    expect(result.message).toContain('zai-org/GLM-5.3');
+    expect(calls[1].url).toBe('https://api.together.ai/v1/models');
+  });
+
+  it('asks for a model and lists choices when none is set', async () => {
+    mockFetch({ body: { data: [{ id: 'llama3.2:latest' }] } });
+    const result = await testConnection(makeConfig({ presetId: 'ollama', baseUrl: 'http://localhost:11434/v1', apiKey: '', model: '' }));
+    expect(result.ok).toBe(false);
+    expect(result.message).toContain('llama3.2:latest');
+  });
+
+  it('does not treat a bad key as a model problem', async () => {
+    mockFetch({ status: 401, body: { error: { message: 'Invalid API key' } } });
+    const result = await testConnection(makeConfig());
+    expect(result.message).toMatch(/rejected the API key/);
+    expect(result.message).not.toMatch(/Load available models/);
   });
 });

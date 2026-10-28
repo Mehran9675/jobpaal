@@ -1,6 +1,6 @@
 import { getActiveProvider } from '@/shared/storage';
 import type { AiTask, CompletionRequest, CompletionResult } from '@/shared/types';
-import { complete, configProblem } from './client';
+import { complete, configProblem, isModelError } from './client';
 import { AiNotConfiguredError } from './errors';
 import { recordUsage } from './usage';
 
@@ -31,6 +31,11 @@ export async function runAi(task: AiTask, request: CompletionRequest): Promise<C
     return { ...result, providerId: provider.id };
   } catch (error) {
     await recordUsage({ ...usageBase, promptTokens: 0, completionTokens: 0, error: true }).catch(() => undefined);
+    if (isModelError(error)) {
+      throw new Error(
+        `${(error as Error).message} The model "${provider.model}" may have been retired. Open JobPaal → AI providers, click "Load available models" and pick a current one.`,
+      );
+    }
     throw error;
   }
 }
