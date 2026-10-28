@@ -13,14 +13,16 @@ interface Candidate {
   score: number;
 }
 
-function ownTextLength(el: Element): number {
-  let length = 0;
+/** Direct text of an element plus its inline children (not nested blocks). */
+function ownText(el: Element): string {
+  let text = '';
   for (let child = el.firstChild; child; child = child.nextSibling) {
-    if (child.nodeType === 3) length += (child.nodeValue ?? '').trim().length;
+    if (child.nodeType === 3) text += child.nodeValue ?? '';
     else if (child.nodeType === 1 && /^(B|STRONG|EM|I|A|SPAN|U|BR|CODE|SMALL|FONT)$/.test((child as Element).tagName))
-      length += ((child as Element).textContent ?? '').trim().length;
+      text += ' ' + ((child as Element).textContent ?? '');
+    if (text.length > 5000) break;
   }
-  return length;
+  return text.trim();
 }
 
 function excludedCache(): (el: Element) => boolean {
@@ -76,10 +78,10 @@ export function findDescriptionCandidates(doc: Document, limit = 4): Element[] {
   for (let i = 0; i < max; i++) {
     const el = nodes[i];
     const tag = el.tagName;
-    const length = tag === 'DIV' || tag === 'TD' || tag === 'SPAN' ? ownTextLength(el) : (el.textContent ?? '').trim().length;
+    const text = tag === 'DIV' || tag === 'TD' || tag === 'SPAN' ? ownText(el) : (el.textContent ?? '').slice(0, 5000).trim();
+    const length = text.length;
     if (length < 25) continue;
     if (isExcluded(el)) continue;
-    const text = el.textContent ?? '';
     const commas = (text.match(/[,.;]/g) ?? []).length;
     const points = 1 + Math.min(length / 100, 3) + Math.min(commas, 10) * 0.3;
     let ancestor: Element | null = tag === 'DIV' || tag === 'TD' ? el : el.parentElement;

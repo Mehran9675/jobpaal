@@ -107,7 +107,7 @@ export function extractText(root: Element, options: TextOptions = {}): string {
       if (el.shadowRoot) walk(el.shadowRoot, pre);
       for (let child = el.firstChild; child; child = child.nextSibling) walk(child, pre);
       if (isPara) push('\n\n');
-      else if (isBlock || isLi) push('\n');
+      else if (isBlock) push('\n');
       return;
     }
     for (let child = node.firstChild; child; child = child.nextSibling) walk(child, inPre);

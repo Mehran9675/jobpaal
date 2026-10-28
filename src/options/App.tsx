@@ -21,6 +21,10 @@ export function App() {
   }, [route.section]);
 
   useEffect(() => {
+    if (!route.focus) window.scrollTo(0, 0);
+  }, [route.section, route.applicationId, route.view, route.focus]);
+
+  useEffect(() => {
     document.documentElement.style.colorScheme = theme;
     document.body.style.margin = '0';
   }, [theme]);
@@ -28,7 +32,7 @@ export function App() {
   return (
     <div className="jp-root jp-opt-app" data-theme={theme}>
       <Sidebar current={route.section} locked={settings !== undefined && !accepted} />
-      <main className="jp-opt-main" id="main">
+      <main className="jp-opt-main" id="main" tabIndex={-1}>
         {settings === undefined ? (
           <div className="jp-opt-loading">
             <Spinner label="Loading" />

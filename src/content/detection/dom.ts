@@ -112,6 +112,7 @@ export function labelledValue(doc: Document | Element, pattern: RegExp, max = 15
     return '';
   }
   for (const el of nodes) {
+    if (el.childElementCount > 4) continue;
     const raw = el.textContent ?? '';
     if (raw.length > 200 || isExcluded(el)) continue;
     const text = cleanInline(raw);
