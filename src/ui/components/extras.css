@@ -1,0 +1,349 @@
+/* Styles for the shared components added for the management page (Modal, ConfirmDialog,
+   StatTile, DocumentPreview, MatchSummary, UsageSummary, StringListEditor, TagInput,
+   RepeatableList). Import this file next to base.css on any page that uses them. */
+
+/* Modal */
+.jp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 14, 20, 0.45);
+}
+.jp-modal__panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius);
+  background: var(--jp-surface);
+  box-shadow: var(--jp-shadow);
+  outline: none;
+}
+.jp-modal__panel--sm {
+  max-width: 460px;
+}
+.jp-modal__panel--md {
+  max-width: 680px;
+}
+.jp-modal__panel--lg {
+  max-width: 980px;
+}
+.jp-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--jp-border);
+}
+.jp-modal__title {
+  font-size: 16px;
+  font-weight: 650;
+}
+.jp-modal__body {
+  padding: 16px;
+  overflow: auto;
+}
+.jp-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--jp-border);
+}
+
+/* Stat tile */
+.jp-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius);
+  background: var(--jp-surface);
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.jp-stat--clickable {
+  cursor: pointer;
+}
+.jp-stat--clickable:hover {
+  border-color: var(--jp-border-strong);
+  background: var(--jp-bg-subtle);
+}
+.jp-stat--clickable:focus-visible {
+  outline: 2px solid var(--jp-primary);
+  outline-offset: 1px;
+}
+.jp-stat__value {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.jp-stat__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--jp-text-muted);
+}
+.jp-stat__hint {
+  font-size: 12px;
+  color: var(--jp-text-faint);
+}
+.jp-stat--success .jp-stat__value {
+  color: var(--jp-success);
+}
+.jp-stat--info .jp-stat__value {
+  color: var(--jp-primary);
+}
+.jp-stat--warning .jp-stat__value {
+  color: var(--jp-warning);
+}
+.jp-stat--danger .jp-stat__value {
+  color: var(--jp-danger);
+}
+
+/* Document preview */
+.jp-doc-preview {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius-sm);
+  background: #fff;
+}
+.jp-doc-preview--loading {
+  display: grid;
+  place-items: center;
+  background: var(--jp-bg-subtle);
+  color: var(--jp-text-muted);
+}
+.jp-doc-preview--text {
+  margin: 0;
+  padding: 12px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--jp-mono);
+  font-size: 12.5px;
+  background: var(--jp-bg-subtle);
+  color: var(--jp-text);
+}
+
+/* Match summary */
+.jp-match {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.jp-match__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.jp-match__reasons {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.jp-match__reasons li + li {
+  margin-top: 3px;
+}
+
+/* Usage summary */
+.jp-usage {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.jp-usage__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+.jp-usage__grid dt {
+  font-size: 12px;
+  color: var(--jp-text-muted);
+}
+.jp-usage__grid dd {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.jp-usage__errors {
+  color: var(--jp-danger);
+}
+.jp-usage__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.jp-usage__table th,
+.jp-usage__table td {
+  padding: 5px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--jp-border);
+}
+.jp-usage__table th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--jp-text-muted);
+}
+.jp-usage__table td:not(:first-child),
+.jp-usage__table th:not(:first-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.jp-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--jp-bg-muted);
+  overflow: hidden;
+}
+.jp-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--jp-primary);
+}
+.jp-meter--warning > span {
+  background: var(--jp-warning);
+}
+.jp-meter--danger > span {
+  background: var(--jp-danger);
+}
+
+/* String list editor */
+.jp-list-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.jp-list-editor__items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.jp-list-editor__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+.jp-list-editor__input {
+  flex: 1;
+}
+.jp-list-editor__actions {
+  display: flex;
+  gap: 2px;
+  padding-top: 3px;
+}
+
+/* Tag input */
+.jp-tag-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 4px 6px;
+  border: 1px solid var(--jp-border-strong);
+  border-radius: var(--jp-radius-sm);
+  background: var(--jp-surface);
+}
+.jp-tag-input:focus-within {
+  outline: 2px solid var(--jp-primary);
+  outline-offset: -1px;
+  border-color: transparent;
+}
+.jp-tag-input__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.jp-tag-input__remove {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--jp-text-faint);
+  font-size: 11px;
+  cursor: pointer;
+}
+.jp-tag-input__remove:hover,
+.jp-tag-input__remove:focus-visible {
+  color: var(--jp-danger);
+}
+.jp-tag-input__input {
+  flex: 1;
+  min-width: 120px;
+  padding: 3px 4px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--jp-text);
+  font: inherit;
+}
+
+/* Repeatable list */
+.jp-repeatable {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.jp-repeatable__item {
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius-sm);
+  background: var(--jp-surface);
+}
+.jp-repeatable__item.is-open {
+  border-color: var(--jp-border-strong);
+}
+.jp-repeatable__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px 4px 4px;
+}
+.jp-repeatable__toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 6px;
+  border: 0;
+  border-radius: var(--jp-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.jp-repeatable__toggle:focus-visible {
+  outline: 2px solid var(--jp-primary);
+}
+.jp-repeatable__chevron {
+  width: 12px;
+  color: var(--jp-text-faint);
+}
+.jp-repeatable__remove {
+  color: var(--jp-danger);
+}
+.jp-repeatable__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 12px 14px;
+  border-top: 1px solid var(--jp-border);
+  padding-top: 12px;
+}
