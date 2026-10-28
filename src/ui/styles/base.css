@@ -1,0 +1,427 @@
+/* JobPaal design tokens and primitives. Shared by every surface, including the
+   overlay's shadow root, so selectors are scoped to .jp-root. */
+.jp-root {
+  --jp-bg: #ffffff;
+  --jp-bg-subtle: #f6f7f9;
+  --jp-bg-muted: #eef0f3;
+  --jp-surface: #ffffff;
+  --jp-border: #dfe3e8;
+  --jp-border-strong: #c6ccd4;
+  --jp-text: #15191e;
+  --jp-text-muted: #5a6470;
+  --jp-text-faint: #8a939d;
+  --jp-primary: #2457d6;
+  --jp-primary-hover: #1d47b3;
+  --jp-primary-soft: #e8eefc;
+  --jp-on-primary: #ffffff;
+  --jp-success: #16794a;
+  --jp-success-soft: #e3f4ea;
+  --jp-warning: #9a5b00;
+  --jp-warning-soft: #fdf1dc;
+  --jp-danger: #c0312b;
+  --jp-danger-soft: #fbe7e6;
+  --jp-radius: 8px;
+  --jp-radius-sm: 6px;
+  --jp-shadow: 0 8px 30px rgba(15, 23, 42, 0.16), 0 2px 6px rgba(15, 23, 42, 0.08);
+  --jp-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --jp-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--jp-font);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--jp-text);
+  background: var(--jp-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.jp-root[data-theme='dark'] {
+  --jp-bg: #121518;
+  --jp-bg-subtle: #191d21;
+  --jp-bg-muted: #22272d;
+  --jp-surface: #181c20;
+  --jp-border: #2e353c;
+  --jp-border-strong: #424b55;
+  --jp-text: #e8ebee;
+  --jp-text-muted: #a3acb6;
+  --jp-text-faint: #77818c;
+  --jp-primary: #5b8cff;
+  --jp-primary-hover: #7aa2ff;
+  --jp-primary-soft: #1e2a45;
+  --jp-on-primary: #0b1020;
+  --jp-success: #4cc38a;
+  --jp-success-soft: #15301f;
+  --jp-warning: #f0b45a;
+  --jp-warning-soft: #33280f;
+  --jp-danger: #ff7a73;
+  --jp-danger-soft: #3a1a18;
+  --jp-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.jp-root *,
+.jp-root *::before,
+.jp-root *::after {
+  box-sizing: border-box;
+}
+
+.jp-root h1,
+.jp-root h2,
+.jp-root h3,
+.jp-root h4,
+.jp-root p {
+  margin: 0;
+}
+
+.jp-root a {
+  color: var(--jp-primary);
+}
+
+/* Buttons */
+.jp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 12px;
+  border: 1px solid var(--jp-border-strong);
+  border-radius: var(--jp-radius-sm);
+  background: var(--jp-surface);
+  color: var(--jp-text);
+  font: inherit;
+  font-weight: 550;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s;
+}
+.jp-btn:hover:not(:disabled) {
+  background: var(--jp-bg-muted);
+}
+.jp-btn:focus-visible {
+  outline: 2px solid var(--jp-primary);
+  outline-offset: 1px;
+}
+.jp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.jp-btn--primary {
+  background: var(--jp-primary);
+  border-color: var(--jp-primary);
+  color: var(--jp-on-primary);
+}
+.jp-btn--primary:hover:not(:disabled) {
+  background: var(--jp-primary-hover);
+}
+.jp-btn--danger {
+  color: var(--jp-danger);
+  border-color: var(--jp-danger);
+}
+.jp-btn--danger:hover:not(:disabled) {
+  background: var(--jp-danger-soft);
+}
+.jp-btn--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+.jp-btn--sm {
+  min-height: 26px;
+  padding: 3px 8px;
+  font-size: 12.5px;
+}
+.jp-btn--block {
+  width: 100%;
+}
+
+/* Form controls */
+.jp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.jp-field__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--jp-text-muted);
+}
+.jp-field__hint {
+  font-size: 12px;
+  color: var(--jp-text-faint);
+}
+.jp-input,
+.jp-select,
+.jp-textarea {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--jp-border-strong);
+  border-radius: var(--jp-radius-sm);
+  background: var(--jp-surface);
+  color: var(--jp-text);
+  font: inherit;
+}
+.jp-textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+.jp-input:focus,
+.jp-select:focus,
+.jp-textarea:focus {
+  outline: 2px solid var(--jp-primary);
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+/* Toggle */
+.jp-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.jp-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.jp-toggle__track {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--jp-border-strong);
+  transition: background 0.15s;
+}
+.jp-toggle__track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s;
+}
+.jp-toggle input:checked + .jp-toggle__track {
+  background: var(--jp-primary);
+}
+.jp-toggle input:checked + .jp-toggle__track::after {
+  transform: translateX(14px);
+}
+.jp-toggle input:focus-visible + .jp-toggle__track {
+  outline: 2px solid var(--jp-primary);
+  outline-offset: 2px;
+}
+
+.jp-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+.jp-checkbox input {
+  margin-top: 3px;
+}
+
+/* Card */
+.jp-card {
+  border: 1px solid var(--jp-border);
+  border-radius: var(--jp-radius);
+  background: var(--jp-surface);
+  padding: 16px;
+}
+.jp-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.jp-card__title {
+  font-size: 15px;
+  font-weight: 650;
+}
+
+/* Badge */
+.jp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--jp-bg-muted);
+  color: var(--jp-text-muted);
+  white-space: nowrap;
+}
+.jp-badge--success {
+  background: var(--jp-success-soft);
+  color: var(--jp-success);
+}
+.jp-badge--warning {
+  background: var(--jp-warning-soft);
+  color: var(--jp-warning);
+}
+.jp-badge--danger {
+  background: var(--jp-danger-soft);
+  color: var(--jp-danger);
+}
+.jp-badge--info {
+  background: var(--jp-primary-soft);
+  color: var(--jp-primary);
+}
+
+/* Notice */
+.jp-notice {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--jp-radius-sm);
+  border: 1px solid var(--jp-border);
+  background: var(--jp-bg-subtle);
+  font-size: 13px;
+}
+.jp-notice--warning {
+  background: var(--jp-warning-soft);
+  border-color: transparent;
+  color: var(--jp-warning);
+}
+.jp-notice--danger {
+  background: var(--jp-danger-soft);
+  border-color: transparent;
+  color: var(--jp-danger);
+}
+.jp-notice--success {
+  background: var(--jp-success-soft);
+  border-color: transparent;
+  color: var(--jp-success);
+}
+.jp-notice--info {
+  background: var(--jp-primary-soft);
+  border-color: transparent;
+  color: var(--jp-primary);
+}
+
+/* Spinner */
+.jp-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: jp-spin 0.7s linear infinite;
+  flex: none;
+}
+@keyframes jp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Score ring */
+.jp-score {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+.jp-score__value {
+  position: absolute;
+  font-weight: 700;
+}
+
+/* Chips */
+.jp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.jp-chip {
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--jp-border);
+  font-size: 12px;
+  background: var(--jp-bg-subtle);
+}
+.jp-chip--matched {
+  border-color: transparent;
+  background: var(--jp-success-soft);
+  color: var(--jp-success);
+}
+.jp-chip--missing {
+  border-color: transparent;
+  background: var(--jp-warning-soft);
+  color: var(--jp-warning);
+}
+
+/* Utilities */
+.jp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.jp-row--wrap {
+  flex-wrap: wrap;
+}
+.jp-row--between {
+  justify-content: space-between;
+}
+.jp-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.jp-stack--lg {
+  gap: 16px;
+}
+.jp-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.jp-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.jp-muted {
+  color: var(--jp-text-muted);
+}
+.jp-faint {
+  color: var(--jp-text-faint);
+}
+.jp-small {
+  font-size: 12.5px;
+}
+.jp-strong {
+  font-weight: 650;
+}
+.jp-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.jp-divider {
+  height: 1px;
+  background: var(--jp-border);
+  border: 0;
+  margin: 8px 0;
+}
+.jp-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--jp-text-muted);
+  border: 1px dashed var(--jp-border-strong);
+  border-radius: var(--jp-radius);
+}
+.jp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
