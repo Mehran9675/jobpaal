@@ -21,7 +21,7 @@ export function App() {
   }, [route.section]);
 
   useEffect(() => {
-    if (!route.focus) window.scrollTo(0, 0);
+    if (!route.focus) window.scrollTo?.(0, 0);
   }, [route.section, route.applicationId, route.view, route.focus]);
 
   useEffect(() => {

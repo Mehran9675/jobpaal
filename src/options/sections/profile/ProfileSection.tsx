@@ -37,8 +37,9 @@ export function ProfileSection() {
   // Follow storage changes while the draft has no local edits.
   useEffect(() => {
     if (!stored) return;
-    setDraft((current) => (!current || sameProfile(current, baseline.current) ? stored : current));
+    const previous = baseline.current;
     baseline.current = stored;
+    setDraft((current) => (!current || sameProfile(current, previous) ? stored : current));
   }, [stored]);
 
   const dirty = Boolean(draft && stored && !sameProfile(draft, stored));

@@ -21,7 +21,7 @@ export function ProvidersSection({ focus }: { focus?: 'usage' }) {
 
   const loaded = ai !== undefined;
   useEffect(() => {
-    if (focus === 'usage' && loaded) usageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (focus === 'usage' && loaded) usageRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
   }, [focus, loaded]);
 
   if (!ai) {
